@@ -130,9 +130,11 @@ let mapleader=" "
 noremap ; :
 
 " Save & quit
-noremap Q :q<CR>
-noremap <C-q> :qa!<CR>
-noremap S :w<CR>
+noremap qq :q<CR>
+noremap qa :qa<CR>
+noremap aa :qa!<CR>
+noremap ss :w<CR>
+noremap ss :w<CR>
 
 " Open the vimrc file anytime
 noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
@@ -145,10 +147,11 @@ noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 "noremap K I
 "
 " make Y to copy till the end of the line
-nnoremap Y y$
+nnoremap <c-d> yyp
+nnoremap <c-v> "+p
 
 " Copy to system clipboard
-vnoremap Y "+y
+vnoremap <c-c> "+y
 
 " Indentation
 nnoremap < <<
@@ -772,7 +775,7 @@ command! BD call fzf#run(fzf#wrap({
   \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
 
-noremap <c-d> :BD<CR>
+noremap <c-l> :BD<CR>
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
 
@@ -785,12 +788,12 @@ let g:Lf_PreviewInPopup = 1
 let g:Lf_PreviewCode = 1
 let g:Lf_ShowHidden = 1
 let g:Lf_ShowDevIcons = 1
-let g:Lf_CommandMap = {
-\   '<C-k>': ['<C-u>'],
-\   '<C-j>': ['<C-e>'],
-\   '<C-]>': ['<C-v>'],
-\   '<C-p>': ['<C-n>'],
-\}
+" let g:Lf_CommandMap = {
+" \   '<C-k>': ['<C-u>'],
+" \   '<C-j>': ['<C-e>'],
+" \   '<C-]>': ['<C-v>'],
+" \   '<C-p>': ['<C-n>'],
+" \}
 let g:Lf_UseVersionControlTool = 0
 let g:Lf_IgnoreCurrentBufferName = 1
 let g:Lf_WildIgnore = {
