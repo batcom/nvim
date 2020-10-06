@@ -128,14 +128,10 @@ let g:terminal_color_14 = '#9AEDFE'
 " Set <LEADER> as <SPACE>, ; as :
 let mapleader=" "
 noremap ; :
-
-" Save & quit
 noremap qq :q<CR>
-noremap qa :qa<CR>
+noremap qa :q!<CR>
 noremap aa :qa!<CR>
 noremap ss :w<CR>
-noremap ss :w<CR>
-
 " Open the vimrc file anytime
 noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 
@@ -148,7 +144,7 @@ noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 "
 " make Y to copy till the end of the line
 nnoremap <c-d> yyp
-nnoremap <c-v> "+p
+inoremap <c-v> "+p
 
 " Copy to system clipboard
 vnoremap <c-c> "+y
@@ -164,13 +160,6 @@ map <LEADER>p :bp<cr>
 " Search
 noremap <LEADER><CR> :nohlsearch<CR>
 
-" Adjacent duplicate words
-noremap <LEADER>dw /\(\<\w\+\>\)\_s*\1
-
-" Space to Tab
-nnoremap <LEADER>tt :%s/    /\t/g
-vnoremap <LEADER>tt :s/    /\t/g
-
 " Folding
 noremap <silent> <LEADER>o za
 
@@ -179,43 +168,17 @@ noremap \g :Git
 noremap <c-g> :tabe<CR>:-tabmove<CR>:term lazygit<CR>
 " nnoremap <c-n> :tabe<CR>:-tabmove<CR>:term lazynpm<CR>
 
-
-" ===
-" === Cursor Movement
-" ===
-" New cursor movement (the default arrow keys are used for resizing windows)
-"     ^
-"     u
-" < n   i >
-"     e
-"     v
-" noremap <silent> u k
-" noremap <silent> n h
-" noremap <silent> e j
-" noremap <silent> i l
-" noremap <silent> gu gk
-" noremap <silent> ge gj
-
-" U/E keys for 5 times u/e (faster navigation)
 noremap <silent> K 5k
 noremap <silent> J 5j
 
 " N key: go to the start of the line
-" noremap <silent> N 0
+noremap <silent> N 0
 " I key: go to the end of the line
-"  noremap <silent> I $
+noremap <silent> I $
 
 " Faster in-line navigation
 noremap W 5w
 noremap B 5b
-
-" set h (same as n, cursor left) to 'end of word'
-" noremap h e
-
-" Ctrl + U or E will move up/down the view port without moving the cursor
-noremap <C-Y> 5<C-y>
-noremap <C-E> 5<C-e>
-
 
 source $XDG_CONFIG_HOME/nvim/cursor.vim
 
@@ -249,22 +212,20 @@ noremap = n
 " === Window management
 " ===
 " Use <space> + new arrow keys for moving the cursor around windows
-noremap <LEADER>w <C-w>w
-noremap <LEADER>k <C-w>k
-noremap <LEADER>j <C-w>j
 noremap <LEADER>h <C-w>h
+noremap <LEADER>j <C-w>j
+noremap <LEADER>k <C-w>k
 noremap <LEADER>l <C-w>l
 
 " Disable the default s key
 noremap s <nop>
-noremap <Tab> <nop>
 
 " split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
-noremap sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
-noremap sj :set splitbelow<CR>:split<CR>
-noremap sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
-noremap sl :set splitright<CR>:vsplit<CR>
-
+" noremap sk :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
+" noremap sj :set splitbelow<CR>:split<CR>
+" noremap sh :set nosplitright<CR>:vsplit<CR>:set splitright<CR>
+" noremap sl :set splitright<CR>:vsplit<CR>
+" 
 " Resize splits with arrow keys
 noremap <up> :res +5<CR>
 noremap <down> :res -5<CR>
@@ -341,55 +302,6 @@ noremap \s :%s//g<left><left>
 " set wrap
 noremap <LEADER>sw :set wrap<CR>
 
-" press f10 to show hlgroup
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-" Compile function
-noremap cc:call CompileRunGcc()<CR>
-func! CompileRunGcc()
-	exec "w"
-	if &filetype == 'c'
-		exec "!g++ % -o %<"
-		exec "!time ./%<"
-	elseif &filetype == 'cpp'
-		set splitbelow
-		exec "!g++ -std=c++11 % -Wall -o %<"
-		:sp
-		:res -15
-		:term ./%<
-	elseif &filetype == 'java'
-		exec "!javac %"
-		exec "!time java %<"
-	elseif &filetype == 'sh'
-		:!time bash %
-	elseif &filetype == 'python'
-		set splitbelow
-		:sp
-		:term python3 %
-	elseif &filetype == 'html'
-		silent! exec "!".g:mkdp_browser." % &"
-	elseif &filetype == 'markdown'
-		exec "InstantMarkdownPreview"
-	elseif &filetype == 'tex'
-		silent! exec "VimtexStop"
-		silent! exec "VimtexCompile"
-	elseif &filetype == 'dart'
-		exec "CocCommand flutter.run -d ".g:flutter_default_device
-		silent! exec "CocCommand flutter.dev.openDevLog"
-	elseif &filetype == 'javascript'
-		set splitbelow
-		:sp
-		:term export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings .
-	elseif &filetype == 'go'
-		set splitbelow
-		:sp
-		:term go run .
-	endif
-endfunc
-
-
 " ===
 " === Install Plugins with Vim-Plug
 " ===
@@ -435,7 +347,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'wellle/tmux-complete.vim'
 
 " Snippets
-" Plug 'SirVer/ultisnips'
 Plug 'theniceboy/vim-snippets'
 
 " Undo Tree
@@ -444,18 +355,12 @@ Plug 'mbbill/undotree'
 " Git
 Plug 'theniceboy/vim-gitignore', { 'for': ['gitignore', 'vim-plug'] }
 Plug 'fszymanski/fzf-gitignore', { 'do': ':UpdateRemotePlugins' }
-"Plug 'mhinz/vim-signify'
 Plug 'airblade/vim-gitgutter'
 Plug 'cohama/agit.vim'
 
 " Autoformat
 Plug 'Chiel92/vim-autoformat'
 
-" Tex
-" Plug 'lervag/vimtex'
-
-" CSharp
-Plug 'OmniSharp/omnisharp-vim'
 Plug 'ctrlpvim/ctrlp.vim' , { 'for': ['cs', 'vim-plug'] } " omnisharp-vim dependency
 
 " HTML, CSS, JavaScript, Typescript, PHP, JSON, etc.
@@ -463,13 +368,7 @@ Plug 'elzr/vim-json'
 Plug 'neoclide/jsonc.vim'
 Plug 'othree/html5.vim'
 Plug 'alvan/vim-closetag'
-" Plug 'hail2u/vim-css3-syntax' " , { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
-" Plug 'spf13/PIV', { 'for' :['php', 'vim-plug'] }
-" Plug 'pangloss/vim-javascript', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
 Plug 'yuezk/vim-js', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
-" Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
-" Plug 'jelera/vim-javascript-syntax', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
-"Plug 'jaxbot/browserlink.vim'
 Plug 'HerringtonDarkholme/yats.vim'
 Plug 'posva/vim-vue'
 
@@ -477,11 +376,8 @@ Plug 'posva/vim-vue'
 Plug 'fatih/vim-go' , { 'for': ['go', 'vim-plug'], 'tag': '*' }
 
 " Python
-" Plug 'tmhedberg/SimpylFold', { 'for' :['python', 'vim-plug'] }
 Plug 'Vimjas/vim-python-pep8-indent', { 'for' :['python', 'vim-plug'] }
 Plug 'numirias/semshi', { 'do': ':UpdateRemotePlugins', 'for' :['python', 'vim-plug'] }
-"Plug 'vim-scripts/indentpython.vim', { 'for' :['python', 'vim-plug'] }
-"Plug 'plytophogy/vim-virtualenv', { 'for' :['python', 'vim-plug'] }
 Plug 'tweekmonster/braceless.vim', { 'for' :['python', 'vim-plug'] }
 
 " Flutter
@@ -513,11 +409,7 @@ Plug 'junegunn/vim-after-object' " da= to delete what's after =
 Plug 'godlygeek/tabular' " ga, or :Tabularize <regex> to align
 Plug 'tpope/vim-capslock'	" Ctrl+L (insert) to toggle capslock
 Plug 'easymotion/vim-easymotion'
-" Plug 'Konfekt/FastFold'
-"Plug 'junegunn/vim-peekaboo'
-"Plug 'wellle/context.vim'
-Plug 'svermeulen/vim-subversive'
-Plug 'theniceboy/argtextobj.vim'
+Plug 'wellle/context.vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'chrisbra/NrrwRgn'
 Plug 'AndrewRadev/splitjoin.vim'
@@ -604,26 +496,6 @@ hi NonText ctermfg=gray guifg=grey10
 let g:airline_powerline_fonts = 0
 
 
-" ==
-" == GitGutter
-" ==
-" let g:gitgutter_signs = 0
-let g:gitgutter_sign_allow_clobber = 0
-let g:gitgutter_map_keys = 0
-let g:gitgutter_override_sign_column_highlight = 0
-let g:gitgutter_preview_win_floating = 1
-let g:gitgutter_sign_added = '▎'
-let g:gitgutter_sign_modified = '░'
-let g:gitgutter_sign_removed = '▏'
-let g:gitgutter_sign_removed_first_line = '▔'
-let g:gitgutter_sign_modified_removed = '▒'
-" autocmd BufWritePost * GitGutter
-nnoremap <LEADER>gf :GitGutterFold<CR>
-nnoremap H :GitGutterPreviewHunk<CR>
-nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
-nnoremap <LEADER>g= :GitGutterNextHunk<CR>
-
-
 " ===
 " === coc.nvim
 " ===
@@ -673,23 +545,12 @@ function! Show_documentation()
 		call CocAction('doHover')
 	endif
 endfunction
-nnoremap <LEADER>h :call Show_documentation()<CR>
 
 nnoremap <silent><nowait> <LEADER>d :CocList diagnostics<cr>
 nmap <silent> <LEADER>- <Plug>(coc-diagnostic-prev)
 nmap <silent> <LEADER>= <Plug>(coc-diagnostic-next)
 nnoremap <c-c> :CocCommand<CR>
-" Text Objects
-xmap kf <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap kf <Plug>(coc-funcobj-i)
-omap af <Plug>(coc-funcobj-a)
-xmap kc <Plug>(coc-classobj-i)
-omap kc <Plug>(coc-classobj-i)
-xmap ac <Plug>(coc-classobj-a)
-omap ac <Plug>(coc-classobj-a)
 " Useful commands
-nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 " nmap <silent> gi <Plug>(coc-implementation)
@@ -704,17 +565,11 @@ function! s:cocActionsOpenFromSelected(type) abort
 endfunction
 xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
 nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
-" coctodolist
-nnoremap <leader>tn :CocCommand todolist.create<CR>
-nnoremap <leader>tl :CocList todolist<CR>
-nnoremap <leader>tu :CocCommand todolist.download<CR>:CocCommand todolist.upload<CR>
-" coc-tasks
-noremap <silent> <leader>ts :CocList tasks<CR>
 " coc-snippets
 imap <C-l> <Plug>(coc-snippets-expand)
 vmap <C-e> <Plug>(coc-snippets-select)
-let g:coc_snippet_next = '<c-e>'
-let g:coc_snippet_prev = '<c-n>'
+let g:coc_snippet_next = '<c-j>'
+let g:coc_snippet_prev = '<c-k>'
 imap <C-e> <Plug>(coc-snippets-expand-jump)
 let g:snips_author = 'David Chen'
 autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
@@ -745,7 +600,7 @@ let g:table_mode_cell_text_object_i_map = 'k<Bar>'
 " ===
 set rtp+=/usr/local/opt/fzf
 set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
-set rtp+=/home/david/.linuxbrew/opt/fzf
+set rtp+=/home/coolnet/.linuxbrew/opt/fzf
 " noremap <silent> <C-p> :Files<CR>
 noremap <silent> <C-p> :Leaderf file<CR>
 noremap <silent> <C-f> :Rg<CR>
@@ -779,7 +634,7 @@ noremap <c-l> :BD<CR>
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
 
-
+david
 " ===
 " === Leaderf
 " ===
@@ -1259,14 +1114,6 @@ let g:rnvimr_layout = { 'relative': 'editor',
             \ 'row': 0,
             \ 'style': 'minimal' }
 let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
-
-
-" ===
-" === vim-subversive
-" ===
-nmap s <plug>(SubversiveSubstitute)
-nmap ss <plug>(SubversiveSubstituteLine)
-
 
 " ===
 " === vim-illuminate
