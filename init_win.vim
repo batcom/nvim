@@ -29,7 +29,6 @@ let g:python3_host_prog='C:\Python39\python.exe'
 let &t_ut=''
 set autochdir
 
-
 " ===
 " === Editor behavior
 " ===
@@ -77,6 +76,7 @@ endif
 set colorcolumn=100
 set updatetime=100
 set virtualedit=block
+set pastetoggle=<F9>
 
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
@@ -654,17 +654,9 @@ let g:table_mode_cell_text_object_i_map = 'k<Bar>'
 
 
 
-" ===bat
-
-" set termguicolors
-" colorscheme bat
-
 " ===
 " === FZF
 " ===
-set rtp+=/usr/local/opt/fzf
-set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
-set rtp+=/home/david/.linuxbrew/opt/fzf
 set rtp+=d:\bin\fzf
 set rtp+=d:\bin\bat
 "nnoremap <c-p> :Leaderf file<CR>
@@ -680,8 +672,8 @@ let g:fzf_preview_window = 'right:60%'
 " let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
-let $FZF_DEFAULT_OPTS="--ansi --layout reverse --margin=1,4 "
-"let $FZF_DEFAULT_OPTS="--ansi --layout reverse --margin=1, 4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+"let $FZF_DEFAULT_OPTS="--ansi --layout reverse --margin=1,4 "
+let $FZF_DEFAULT_OPTS="--ansi --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,.svn,node_modules,vendor}/*"'
 command! -bang -nargs=? -complete=dir Files
      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
@@ -1178,11 +1170,6 @@ let g:rnvimr_layout = { 'relative': 'editor',
 let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
 
-" ===
-" === vim-subversive
-" ===
-nmap s <plug>(SubversiveSubstitute)
-nmap ss <plug>(SubversiveSubstituteLine)
 
 
 " ===
