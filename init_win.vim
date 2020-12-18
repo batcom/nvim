@@ -25,7 +25,7 @@ let g:python3_host_prog='C:\Python39\python.exe'
 " ===
 " === System
 " ===
-"set clipboard=unnamedplus
+set clipboard=unnamedplus
 let &t_ut=''
 set autochdir
 
@@ -79,6 +79,9 @@ set virtualedit=block
 set pastetoggle=<F9>
 
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+" 检测外部修改，自动加载
+autocmd FocusGained * :checktime
+set autoread
 
 
 " ===
@@ -116,7 +119,7 @@ noremap ; :
 noremap Q :q<CR>
 noremap <C-q> :qa<CR>
 noremap S :w<CR>
-
+inoremap jj <Esc>:w<CR>
 " Open the vimrc file anytime
 noremap <LEADER>rc :e C:\Users\Administrator\AppData\Local\nvim\init.vim<CR>
 
@@ -189,7 +192,13 @@ cnoremap <M-w> <S-Right>
 " ===
 noremap - N
 noremap = n
-
+" === 上下换行
+nnoremap <A-j> :m+<CR>==
+nnoremap <A-k> :m-2<CR>==
+inoremap <A-j> <Esc>:m+<CR>==gi
+inoremap <A-k> <Esc>:m-2<CR>==gi
+vnoremap <A-j> :m'>+<CR>gv=gv
+vnoremap <A-k> :m-2<CR>gv=gv
 
 " ===
 " === Window management
@@ -228,6 +237,7 @@ noremap srv <C-w>b<C-w>H
 " Press <SPACE> + q to close the window below the current window
 noremap <LEADER>q <C-w>j:q<CR>
 
+autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
 " ===
 " === Tab management
@@ -251,6 +261,10 @@ noremap tmi :+tabmove<CR>
 :nn <M-9> 9gt
 :nn <M-0> :tablast<CR>
 
+" 复制
+noremap <A-v> "0p
+inoremap <A-a> <ESC>2la
+inoremap <A-l> <ESC>la
 
 " ===
 " === Markdown Settings
@@ -330,7 +344,6 @@ Plug 'airblade/vim-rooter'
 " Taglist
 Plug 'liuchengxu/vista.vim'
 
-" Debugger
 " Plug 'puremourning/vimspector', {'do': './install_gadget.py --enable-c --enable-python --enable-go'}
 
 " Auto Complete
@@ -417,7 +430,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'mg979/vim-visual-multi'
 Plug 'tomtom/tcomment_vim' " in <space>cn to comment a line
 Plug 'theniceboy/antovim' " gs to switch
-Plug 'tpope/vim-surround' " type yskw' to wrap the word with '' or type cs'` to change 'word' to `word`
+"Plug 'tpope/vim-surround' " type yskw' to wrap the word with '' or type cs'` to change 'word' to `word`
+Plug 'machakann/vim-sandwich'
 Plug 'gcmt/wildfire.vim' " in Visual mode, type k' to select all text in '', or type k) k] k} kp
 Plug 'junegunn/vim-after-object' " da= to delete what's after =
 Plug 'godlygeek/tabular' " ga, or :Tabularize <regex> to align
@@ -582,7 +596,7 @@ function! Show_documentation()
 		call CocAction('doHover')
 	endif
 endfunction
-nnoremap <LEADER>h :call Show_documentation()<CR>
+nnoremap <LEADER>e :call Show_documentation()<CR>
 " set runtimepath^=~/.config/nvim/coc-extensions/coc-flutter-tools/
 " let g:coc_node_args = ['--nolazy', '--inspect-brk=6045']
 " let $NVIM_COC_LOG_LEVEL = 'debug'
