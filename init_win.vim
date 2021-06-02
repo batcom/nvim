@@ -15,8 +15,8 @@
 " ===
 " === Auto load for first time uses
 " ===
-let g:python_host_prog='C:\Users\Administrator\.pyenv\pyenv-win\versions\2.7.17\python.exe'
-let g:python3_host_prog='C:\Python39\python.exe'
+let g:python_host_prog='C:\Python27\python.exe'
+let g:python3_host_prog='C:\Users\coolnet\.pyenv\pyenv-win\shims\python3.9'
 
 
 " ====================
@@ -67,11 +67,11 @@ set completeopt=longest,noinsert,menuone,noselect,preview
 set ttyfast "should make scrolling faster
 set lazyredraw "same as above
 set visualbell
-set backupdir=C:\Users\Administrator\.config\nvim\tmp\backup,.
-set directory=C:\Users\Administrator\.config\nvim\tmp\backup,.
+set backupdir=C:\Users\coolnet\.config\nvim\tmp\backup,.
+set directory=C:\Users\coolnet\.config\nvim\tmp\backup,.
 if has('persistent_undo')
 	set undofile
-	set undodir=C:\Users\Administrator\.config\nvim\tmp\undo,.
+	set undodir=C:\Users\coolnet\.config\nvim\tmp\undo,.
 endif
 set colorcolumn=100
 set updatetime=100
@@ -122,7 +122,7 @@ noremap qa :qa!<CR>
 noremap S :w<CR>
 inoremap jj <Esc>:w<CR>
 " Open the vimrc file anytime
-noremap <LEADER>rc :e C:\Users\Administrator\AppData\Local\nvim\init.vim<CR>
+noremap <LEADER>rc :e C:\Users\coolnet\AppData\Local\nvim\init.vim<CR>
 
 
 " make Y to copy till the end of the line
@@ -167,7 +167,7 @@ noremap <C-U> 5<C-y>
 noremap <C-E> 5<C-e>
 
 
-source C:\Users\Administrator\AppData\Local\nvim\cursor.vim
+source C:\Users\coolnet\AppData\Local\nvim\cursor.vim
 
 " ===
 " === Insert Mode Cursor Movement
@@ -272,7 +272,7 @@ noremap <C-a> ggVG
 " === Markdown Settings
 " ===
 " Snippets
-source C:\Users\Administrator\AppData\Local\nvim\md-snippets.vim
+source C:\Users\coolnet\AppData\Local\nvim\md-snippets.vim
 " auto spell
 autocmd BufRead,BufNewFile *.md setlocal spell
 
@@ -338,7 +338,7 @@ Plug 'airblade/vim-rooter'
 Plug 'liuchengxu/vista.vim'
 
 " Auto Complete
-Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'wellle/tmux-complete.vim'
 Plug 'marlonfan/coc-phpls'
 
