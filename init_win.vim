@@ -330,7 +330,10 @@ Plug 'jsfaint/gen_tags.vim'
 " File navigation
 Plug 'junegunn/fzf', { 'do': { -> fzf#install()  }  }
 Plug 'junegunn/fzf.vim'
+Plug 'voldikss/fzf-floaterm'
+Plug 'voldikss/vim-floaterm'
 " Plug 'yuki-ycino/fzf-preview.vim', { 'branch': 'release', 'do': ':UpdateRemotePlugins'  }
+" Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/rpc' }
 " Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 Plug 'airblade/vim-rooter'
 
@@ -609,60 +612,68 @@ let g:table_mode_cell_text_object_i_map = 'k<Bar>'
 " ===
 " === FZF
 " ===
+" let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } } " 弹出窗口
+" let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+" let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,node_modules}/*"'
 set rtp+=d:\soft\bin\fzf
 set rtp+=d:\soft\bin\bat
+let $FZF_DEFAULT_OPTS='--preview "bat --style=numbers --color=always --line-range :500 {}"'
+let g:floaterm_opener='edit'
+command! FP FloatermNew fzf
+noremap <silent> <C-p> :FP<CR>
+
 "nnoremap <c-p> :Leaderf file<CR>
-noremap <silent> <C-p> :call Fzf_dev()<CR>
+" noremap <silent> <C-p> :call Fzf_dev()<CR>
 " noremap <silent> <C-p> :Files<CR>
-noremap <silent> <C-f> :Rg<CR>
-noremap <silent> <C-h> :History<CR>
+" noremap <silent> <C-f> :Rg<CR>
+" noremap <silent> <C-h> :History<CR>
 "noremap <C-t> :BTags<CR>
-noremap <silent> <C-l> :Lines<CR>
-noremap <silent> <C-w> :Buffers<CR>
-noremap <leader>; :History:<CR>
+" noremap <silent> <C-l> :Lines<CR>
+" noremap <silent> <C-w> :Buffers<CR>
+" noremap <leader>; :History:<CR>
 " nnoremap <silent> <leader>e :call Fzf_dev()<CR>
 
 " nnoremap <silent> <leader>e :call Fzf_dev()<CR>
 
 " ripgrep
-if executable('rg')
-  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-  set grepprg=rg\ --vimgrep
-  command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
-endif
+" if executable('rg')
+"   let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!{.git,node_modules}/*"'
+"   set grepprg=rg\ --vimgrep
+"   command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+" endif
 
-" Files + devicons
-function! Fzf_dev()
-  let l:fzf_files_options = '--preview "bat --theme="OneHalfDark" --style=numbers,changes --color always {2..-1} | head -'.&lines.'"'
+" " Files + devicons
+" function! Fzf_dev()
+"   let l:fzf_files_options = '--preview "bat --theme="OneHalfDark" --style=numbers,changes --color always {2..-1} | head -'.&lines.'"'
 
-  function! s:files()
-    let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
-    return s:prepend_icon(l:files)
-  endfunction
+"   function! s:files()
+"     let l:files = split(system($FZF_DEFAULT_COMMAND), '\n')
+"     return s:prepend_icon(l:files)
+"   endfunction
 
-  function! s:prepend_icon(candidates)
-    let l:result = []
-    for l:candidate in a:candidates
-      let l:filename = fnamemodify(l:candidate, ':p:t')
-      let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
-      call add(l:result, printf('%s %s', l:icon, l:candidate))
-    endfor
+"   function! s:prepend_icon(candidates)
+"     let l:result = []
+"     for l:candidate in a:candidates
+"       let l:filename = fnamemodify(l:candidate, ':p:t')
+"       let l:icon = WebDevIconsGetFileTypeSymbol(l:filename, isdirectory(l:filename))
+"       call add(l:result, printf('%s %s', l:icon, l:candidate))
+"     endfor
 
-    return l:result
-  endfunction
+"     return l:result
+"   endfunction
 
-  function! s:edit_file(item)
-    let l:pos = stridx(a:item, ' ')
-    let l:file_path = a:item[pos+1:-1]
-    execute 'silent e' l:file_path
-  endfunction
+"   function! s:edit_file(item)
+"     let l:pos = stridx(a:item, ' ')
+"     let l:file_path = a:item[pos+1:-1]
+"     execute 'silent e' l:file_path
+"   endfunction
 
-  call fzf#run({
-        \ 'source': <sid>files(),
-        \ 'sink':   function('s:edit_file'),
-        \ 'options': '-m ' . l:fzf_files_options,
-        \ 'down':    '40%' })
-endfunction
+"   call fzf#run({
+"         \ 'source': <sid>files(),
+"         \ 'sink':   function('s:edit_file'),
+"         \ 'options': '-m ' . l:fzf_files_options,
+"         \ 'down':    '40%' })
+" endfunction
 
 " ===
 " === Leaderf
